@@ -43,10 +43,15 @@
 		? getScript(getURL('3rd/Leaflet.GoogleMutant.js'))
 		: Promise.resolve(null);
 
+	const loadLayers = getScript(getURL('layers.js'));
+
+	// Strava's new map engine (route builder, Maps); independent of the legacy stack below
+	loadLayers.then(() => getScript(getURL('fix-fatmap.js')));
+
 	loadJQuery().then(() => Promise.all([
 		getScript(getURL('arrive.min.js')),
 		getScript(getURL('common.js')),
-		getScript(getURL('layers.js')),
+		loadLayers,
 		getScript(getURL('donation.js')),
 		ignoreError(loadGoogleMaps().then(() => Promise.all([
 			loadGoogleMutant(),

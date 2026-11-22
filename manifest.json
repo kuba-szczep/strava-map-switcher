@@ -43,6 +43,7 @@
         "arrive.min.js",
         "common.js",
         "donation.js",
+        "fix-fatmap.js",
         "fix-mapbox.js",
         "fix.js",
         "layers.js",

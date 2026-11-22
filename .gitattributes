@@ -2,3 +2,5 @@
 /Makefile export-ignore
 /README.* export-ignore
 /greasemonkey.user.js export-ignore
+/standalone.user.js export-ignore
+/build-userscript.sh export-ignore

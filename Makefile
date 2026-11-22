@@ -1,5 +1,9 @@
 BRANCH = $(or $(shell git symbolic-ref --short HEAD),$(error cannot detect branch))
 
+.PHONY: userscript
+userscript:
+	./build-userscript.sh
+
 .PHONY: zip
 zip:
 	git archive -o $(notdir $(CURDIR))-$(shell git describe).zip @
