@@ -10,6 +10,61 @@ Adds additional maps to Strava.com:
  - [Google Maps](https://maps.google.com/)
  - …
 
+## Strava's new map engine (this fork)
+
+The route builder and the Maps pages now use Strava's own map engine
+instead of Mapbox GL. This fork supports it ([fix-fatmap.js](fix-fatmap.js))
+with a user script served by [jsDelivr](https://www.jsdelivr.com/) straight
+from this repository.
+
+### Install
+
+1. Install a user script manager: [Tampermonkey](https://www.tampermonkey.net/)
+   or [Violentmonkey](https://violentmonkey.github.io/get-it/).
+   In Chrome and Edge, also turn on *Allow User Scripts* in the extension's
+   details (`chrome://extensions`), otherwise no user script runs.
+2. Open
+   <https://cdn.jsdelivr.net/gh/kuba-szczep/strava-map-switcher@master/standalone.user.js>
+   and confirm the installation.
+3. Turn off any other strava-map-switcher (the browser extension or other user
+   scripts loading it): two switchers fight over the map.
+4. Open the [route builder](https://www.strava.com/maps/create). A
+   *Map: Strava ▾* panel shows up in the top right corner of the map.
+
+`standalone.user.js` contains everything and is the tested way. The
+alternative is the loader
+<https://cdn.jsdelivr.net/gh/kuba-szczep/strava-map-switcher@master/greasemonkey.user.js>,
+which fetches `load.js` from jsDelivr on every page load and also runs the old
+switcher code for pages still using Leaflet or Mapbox GL.
+
+### Updating
+
+jsDelivr caches `@master` for up to 12 hours, and browsers keep it for up to
+7 days. After pushing a change:
+
+1. Clear the CDN cache by opening
+   <https://purge.jsdelivr.net/gh/kuba-szczep/strava-map-switcher@master/standalone.user.js>
+   (with the loader, do the same for `load.js`, `fix-fatmap.js` and `layers.js`).
+2. Install the script again from the same URL (with the loader, reload Strava
+   with Ctrl+Shift+R instead).
+
+A commit hash instead of `@master` (for example `@1a2b3c4`) is never stale.
+
+`standalone.user.js` is generated from `layers.js` and `fix-fatmap.js`: after
+changing them, run `./build-userscript.sh` (or `make userscript`) and commit
+the result.
+
+### Notes
+
+- PNG layers (OpenStreetMap, CyclOSM, …) show from zoom level 8 up. Below
+  that, Strava's own map is visible. JPEG layers (swisstopo, …) work at every
+  zoom level.
+- OpenCycleMap, Transport and Outdoors need a free
+  [Thunderforest API key](https://manage.thunderforest.com/users/sign_up?price=hobby-project-usd),
+  entered at the bottom of the panel. Without it, the tiles carry an
+  "API Key Required" watermark.
+- Choosing a map style in Strava's map settings turns the switcher off.
+
 ## Donations (♥ = €)
 
 If you like this extension and wish to support its development and maintenance
